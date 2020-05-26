@@ -138,7 +138,10 @@ with tf.Graph().as_default():
     output_graph_def.ParseFromString(f.read())
     tf.import_graph_def(output_graph_def, name="")
 
-  with tf.Session() as sess:
+  config = tf.ConfigProto()
+  config.gpu_options.allow_growth = True
+
+  with tf.Session(config=config) as sess:
     init = tf.global_variables_initializer()
     sess.run(init)
     image_ph = sess.graph.get_tensor_by_name('img:0')
